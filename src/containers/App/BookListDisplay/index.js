@@ -8,10 +8,8 @@ class BookListDisplay extends Component {
 
     }
 
-
-
     render(){
-        return(
+         return(
             <ul>
                 {
                     this.props.books.map( book => {
