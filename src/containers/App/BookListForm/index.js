@@ -18,7 +18,6 @@ class BookListForm extends Component {
     }
 
     titleChange = (event) => {
-        console.log(event.target.value)
         this.setState({
             title: event.target.value
         })

@@ -11,10 +11,6 @@ class BookListSearch extends Component {
 
     handleSearch = (event) => {
         event.preventDefault();
-        console.log(event.target.value)
-
-        console.log(this.state.search)
-        console.log(this.props.filterBooks)
         this.props.filterBooks(event.target.value)
     }
 

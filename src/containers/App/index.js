@@ -6,6 +6,16 @@ import BookListSearch from './BookListSearch';
 import {bookList} from '../../lib/data';
 import logo from '../../logo.svg';
 import './styles.css';
+//redux stuff
+import {addBook} from '../../actions';
+import {connect} from 'react-redux';
+import {createStore} from 'redux';
+import {Provider} from 'react-redux';
+import books from '../../reducers'
+let store = createStore(books);
+
+
+store.dispatch(addBook("hack the planet", "me"))
 
 class App extends Component {
     constructor(){
@@ -22,9 +32,7 @@ class App extends Component {
     }
 
     addBook = (book) => {
-        this.setState({
-            books: this.state.books.concat([book])
-        })
+        this.props.onAddBook(book.title, book.author)
     }
 
     filterBooks = (search) => {
@@ -37,8 +45,8 @@ class App extends Component {
 
     componentWillMount(){
         this.fakeXHRRequest().then(books => {
-            this.setState({
-                books
+            books.forEach(book => {
+                this.props.onAddBook(book.title, book.author)
             })
         })
     }
@@ -50,8 +58,8 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h2>Welcome to React</h2>
         </div>
-      <BookListAppTitle title={this.title}/>
-      <BookListDisplay books={this.state.books}/>
+      <BookListAppTitle title={this.props.title}/>
+      <BookListDisplay books={this.props.books}/>
       <BookListForm addBook={this.addBook}/>
       <BookListSearch filterBooks={this.filterBooks}/>
       </div>
@@ -59,4 +67,23 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    books: state.books
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAddBook: (title, author) => {
+      dispatch(addBook(title, author));
+    }
+  }
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
+
+// export default App;
